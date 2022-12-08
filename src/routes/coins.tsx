@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchCoins } from '../api';
+import { Helmet } from 'react-helmet';
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -16,7 +19,7 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-    background-color: white;
+    background-color: ${(props) => props.theme.liBgColor};
     color: ${(props) => props.theme.bgColor};
     border-radius: 15px;
     margin-bottom: 10px;
@@ -49,7 +52,7 @@ const Img = styled.img`
     margin-right: 10px;
 `;
 
-interface CoinInterface {
+interface ICoin {
     id: string;
     name: string;
     symbol: string;
@@ -60,29 +63,33 @@ interface CoinInterface {
 }
 
 function Coins() {
-    const [coins, setcoins] = useState<CoinInterface[]>([]);
-    const [loading, setLoading] = useState(true);
+    // const [coins, setcoins] = useState<ICoin[]>([]);
+    // const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        (async () => {
-            const response = await fetch('https://api.coinpaprika.com/v1/coins');
-            const json = await response.json();
-            setcoins(json.slice(0, 100));
-            setLoading(false);
-        })();
-    }, []);
-    console.log(coins);
+    // useEffect(() => {
+    //     (async () => {
+    //         const response = await fetch('https://api.coinpaprika.com/v1/coins');
+    //         const json = await response.json();
+    //         setcoins(json.slice(0, 100));
+    //         setLoading(false);
+    //     })();
+    // }, []);
+    // console.log(coins);
     // 로드(mount) 시 1회만 실행
+    const { isLoading, data } = useQuery<ICoin[]>(['allCoins'], fetchCoins);
     return (
         <Container>
+            <Helmet>
+                <title>코인</title>
+            </Helmet>
             <Header>
                 <Title>코인</Title>
             </Header>
-            {loading ? (
+            {isLoading ? (
                 <Loader>'Loading...'</Loader>
             ) : (
                 <CoinsList>
-                    {coins.map((coin) => (
+                    {data?.slice(0, 100).map((coin) => (
                         <Coin key={coin.id}>
                             <Link
                                 to={{

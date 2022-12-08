@@ -1,6 +1,11 @@
+import { useState, ChangeEvent } from 'react';
 import { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 import ToggleSwitch from './components/ToggleSwitch';
 import Router from './router';
+import { darkTheme, lightTheme } from './theme';
+import { ThemeProvider } from 'styled-components';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -67,12 +72,50 @@ a{
 }
 `;
 
+const StyledLabelWrap = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+`;
+const StyledLabel = styled.label<{ checked: boolean }>`
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 70px;
+    height: 35px;
+    background: ${({ checked }) => (checked ? '#fff' : '#000')};
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        left: ${({ checked }) => (checked ? '5px' : 'calc(55% - 5px)')};
+        top: 2px;
+        width: 30px;
+        height: 30px;
+        background: #1bbb55;
+        border-radius: 90px;
+        transition: 0.3s;
+    }
+`;
+
 function App() {
+    const [switchState, setSwitchState] = useState(true);
+    function handleOnChange(event: ChangeEvent<HTMLInputElement>) {
+        setSwitchState(!switchState);
+    }
     return (
         <>
-            <ToggleSwitch />
-            <GlobalStyle />
-            <Router />
+            <ThemeProvider theme={switchState ? darkTheme : lightTheme}>
+                <StyledLabelWrap>
+                    <StyledLabel htmlFor="checkbox" checked={switchState}>
+                        <input id="checkbox" type="checkbox" checked={switchState} onChange={handleOnChange} />
+                    </StyledLabel>
+                </StyledLabelWrap>
+                <GlobalStyle />
+                <Router />
+                <ReactQueryDevtools initialIsOpen={true} />
+            </ThemeProvider>
         </>
     );
 }
