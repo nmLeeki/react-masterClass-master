@@ -10,16 +10,18 @@ import { Helmet } from 'react-helmet';
 const Title = styled.h1`
     font-size: 48px;
     color: ${(props) => props.theme.accentColor};
+    font-weight: 500;
 `;
 
 const Home = styled.div`
     display: block;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    font-weight: 500;
+    top: 20px;
+    right: 50px;
     a {
         padding: 10px;
-        background: rgba(0, 0, 0, 0.5);
+        background: ${(props) => props.theme.listBgColor};
         border-radius: 10px;
         display: block;
         width: 100%;
@@ -50,7 +52,7 @@ const Header = styled.header`
 const Overview = styled.div`
     display: flex;
     justify-content: space-between;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${(props) => props.theme.listBgColor};
     padding: 10px 20px;
     border-radius: 10px;
 `;
@@ -69,14 +71,14 @@ const OverviewItem = styled.div`
 const Description = styled.p`
     margin: 20px 0px;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${(props) => props.theme.listBgColor};
     border-radius: 10px;
 `;
 
 const Tabs = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin: 25px 0px;
+    margin: 15px 0px;
     gap: 10px;
 `;
 
@@ -85,7 +87,7 @@ const Tab = styled.span<{ isActive: boolean }>`
     text-transform: uppercase;
     font-size: 12px;
     font-weight: 400;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${(props) => props.theme.listBgColor};
     border-radius: 10px;
     color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
     a {
@@ -121,7 +123,7 @@ interface InfoData {
     last_data_at: string;
 }
 
-interface PriceData {
+export interface PriceData {
     id: string;
     name: string;
     symbol: string;
@@ -232,7 +234,7 @@ function Coin() {
                     </Tabs>
                     <Switch>
                         <Route path={`/${coinId}/price`}>
-                            <Price></Price>
+                            <Price tickersData={tickersData!}></Price>
                         </Route>
                         <Route path={`/${coinId}/chart`}>
                             <Chart coinId={coinId} />

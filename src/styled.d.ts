@@ -3,10 +3,11 @@ import 'styled-components';
 
 // and extend them!
 declare module 'styled-components' {
-  export interface DefaultTheme {
-    textColor: string;
-    bgColor: string;
-    accentColor: string;
-    liBgColor: string;
-  }
+    export interface DefaultTheme {
+        textColor: string;
+        bgColor: string;
+        accentColor: string;
+        liBgColor: string;
+        listBgColor: string;
+    }
 }

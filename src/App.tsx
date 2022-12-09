@@ -93,7 +93,7 @@ const StyledLabel = styled.label<{ checked: boolean }>`
         top: 2px;
         width: 30px;
         height: 30px;
-        background: #1bbb55;
+        background: ${(props) => props.theme.accentColor};
         border-radius: 90px;
         transition: 0.3s;
     }
