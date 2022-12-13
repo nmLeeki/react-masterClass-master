@@ -6,6 +6,8 @@ import Router from './router';
 import { darkTheme, lightTheme } from './theme';
 import { ThemeProvider } from 'styled-components';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { isDarkAtom } from './atoms';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -100,16 +102,15 @@ const StyledLabel = styled.label<{ checked: boolean }>`
 `;
 
 function App() {
-    const [switchState, setSwitchState] = useState(true);
-    function handleOnChange(event: ChangeEvent<HTMLInputElement>) {
-        setSwitchState(!switchState);
-    }
+    const isDark = useRecoilValue(isDarkAtom);
+    const setIsDark = useSetRecoilState(isDarkAtom);
+    const toggleDarkAticon = () => setIsDark(!isDark);
     return (
         <>
-            <ThemeProvider theme={switchState ? darkTheme : lightTheme}>
+            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
                 <StyledLabelWrap>
-                    <StyledLabel htmlFor="checkbox" checked={switchState}>
-                        <input id="checkbox" type="checkbox" checked={switchState} onChange={handleOnChange} />
+                    <StyledLabel htmlFor="checkbox" checked={isDark}>
+                        <input id="checkbox" type="checkbox" checked={isDark} onChange={toggleDarkAticon} />
                     </StyledLabel>
                 </StyledLabelWrap>
                 <GlobalStyle />
