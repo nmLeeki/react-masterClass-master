@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
 import Coin from './routes/coin';
 import Coins from './routes/coins';
